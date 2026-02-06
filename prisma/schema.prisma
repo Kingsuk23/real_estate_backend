@@ -1,26 +1,158 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider   = "postgresql"
 }
 
-model users {
-  id String @id @default(uuid())
+model Users {
+  id   String @id @default(uuid())
   role Roles
   name String
-  email String @unique
+
+  email    String @unique
   password String
-  phone String
-  licenseNumber String
+
+  phone         String @unique
+  licenseNumber String @unique
+
+  properties Properties[]
+  createdAt  DateTime     @default(now())
+  updateAt   DateTime     @updatedAt
+}
+
+model Properties {
+  id String @id @default(uuid())
+
+  agent Users @relation(fields: [agentId], references: [id])
+
+  agentId String
+
+  description String
+
+  price Float
+
+  beds  Int
+  baths Int
+
+  garage Int?
+
+  listingStatus      listingStatusEnum
+  tour               tourEnum
+  constructionStatus constructionStatusEnum
+  purchaseType       purchaseTypeEnum
+  propertyType       propertyTypeEnum
+  stories            storiesEnum
+
+  listingDate DateTime
+  buildDate   DateTime
+
+  lotsSize Float
+  areaSize Float
+
+  openHouse DateTime?
+
+  address String
+  city    String
+  country String
+  street  String
+  zipcode Int
+
+  features  PropertyFeature[]
+  amenities PropertyAmenities[]
+
+  lat Float
+  lng Float
+
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updateAt  DateTime @updatedAt
+
+  @@index([city, zipcode])
+  @@index([price])
+  @@index([address])
+}
+
+model Amenities {
+  id String @id @default(uuid())
+
+  name String
+
+  properties PropertyAmenities[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Features {
+  id String @id @default(uuid())
+
+  name String
+
+  properties PropertyFeature[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model PropertyFeature {
+  propertyId String
+  featureId  String
+
+  property Properties @relation(fields: [propertyId], references: [id])
+  feature  Features   @relation(fields: [featureId], references: [id])
+
+  @@id([propertyId, featureId])
+}
+
+model PropertyAmenities {
+  propertyId String
+  amenityId  String
+
+  property Properties @relation(fields: [propertyId], references: [id])
+  amenity  Amenities  @relation(fields: [amenityId], references: [id])
+
+  @@id([propertyId, amenityId])
 }
 
 enum Roles {
-USER
-AGENT
-ADMIN
+  USER
+  AGENT
+  ADMIN
+}
+
+enum listingStatusEnum {
+  pending
+  active
+}
+
+enum tourEnum {
+  threed
+  open_house
+}
+
+enum constructionStatusEnum {
+  existing_home
+  new_construction
+  foreclosures
+}
+
+enum purchaseTypeEnum {
+  sold
+  rent
+}
+
+enum storiesEnum {
+  single
+  multi
+}
+
+enum propertyTypeEnum {
+  residential
+  commercial
+  condo
+  multi_family
+  co_op
+  town_homes
 }

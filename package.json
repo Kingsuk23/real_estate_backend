@@ -12,18 +12,25 @@
     "format": "prettier --write \"src/**/*.{ts,js,json,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,js,json,md}\""
   },
+  "pnpm": {
+    "overrides": {
+      "lodash": ">=4.17.23",
+      "hono": ">=4.11.7"
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.28.0",
+  "packageManager": "pnpm@10.28.2",
   "dependencies": {
-    "@arcjet/next": "^1.0.0",
+    "@arcjet/next": "^1.1.0",
+    "@elastic/elasticsearch": "^9.3.0",
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",
     "@types/bcrypt": "^6.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "bcrypt": "^6.0.0",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.2.4",
     "envalid": "^8.1.1",
     "express": "^5.2.1",
     "http-status-codes": "^2.3.0",
@@ -37,7 +44,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@types/express": "^5.0.6",
-    "@types/node": "^25.2.0",
+    "@types/node": "^25.2.1",
     "@types/pg": "^8.16.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",

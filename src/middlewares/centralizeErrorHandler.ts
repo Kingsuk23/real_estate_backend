@@ -1,8 +1,8 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { StatusCodes, getReasonPhrase } from 'http-status-codes';
 import { baseError, errorHandler } from '../utils/Errorhandler';
 
-export const centralizeErrorHandler = (err: Error, req: Request, res: Response) => {
+export const centralizeErrorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof baseError && errorHandler.isTrustedError(err)) {
     return res.status(err.httpStatusCode).json({
       name: err.name,

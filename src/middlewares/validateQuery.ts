@@ -2,10 +2,10 @@ import type { NextFunction, Request, Response } from 'express';
 import z, { ZodError, ZodIssue } from 'zod';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 
-export const validateInput = (schema: z.ZodObject) => {
+export const validateQuery = (schema: z.ZodObject) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      schema.parse(req.body);
+      schema.parse(req.query);
       next();
     } catch (error) {
       if (error instanceof ZodError) {
