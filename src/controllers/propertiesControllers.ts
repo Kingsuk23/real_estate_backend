@@ -193,6 +193,8 @@ export const createPropertyController = asyncHandler(async (req: Request, res: R
       buildDate,
       openHouse,
 
+      like: false,
+
       images: [],
     },
   });

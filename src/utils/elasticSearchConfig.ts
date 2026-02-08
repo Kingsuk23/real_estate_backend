@@ -57,7 +57,19 @@ export const propertiesMapping: MappingTypeMapping = {
     buildDate: { type: 'date' },
     openHouse: { type: 'date' },
 
-    images: { type: 'keyword' },
+    media: {
+      type: 'nested',
+      properties: {
+        id: { type: 'keyword' },
+        contentType: {
+          type: 'keyword',
+        },
+        mediaUrl: { type: 'keyword' },
+        blurDataUrl: { type: 'keyword' },
+      },
+    },
+
+    like: { type: 'boolean' },
 
     semantic_field: { type: 'text' },
   },

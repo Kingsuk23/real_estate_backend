@@ -1,10 +1,10 @@
 generator client {
-  provider        = "prisma-client"
-  output          = "../src/generated/prisma"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider   = "postgresql"
+  provider = "postgresql"
 }
 
 model Users {
@@ -19,8 +19,10 @@ model Users {
   licenseNumber String @unique
 
   properties Properties[]
-  createdAt  DateTime     @default(now())
-  updateAt   DateTime     @updatedAt
+  liked      LikedProperty[]
+
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
 }
 
 model Properties {
@@ -29,6 +31,8 @@ model Properties {
   agent Users @relation(fields: [agentId], references: [id])
 
   agentId String
+
+  like LikedProperty?
 
   description String
 
@@ -62,6 +66,7 @@ model Properties {
 
   features  PropertyFeature[]
   amenities PropertyAmenities[]
+  media     PropertyMedia[]
 
   lat Float
   lng Float
@@ -114,6 +119,36 @@ model PropertyAmenities {
   amenity  Amenities  @relation(fields: [amenityId], references: [id])
 
   @@id([propertyId, amenityId])
+}
+
+model LikedProperty {
+  id String @id @default(uuid())
+
+  property Properties @relation(references: [id], fields: [propertyId], onDelete: Cascade, onUpdate: Cascade)
+
+  propertyId String @unique
+
+  user Users @relation(references: [id], fields: [userId], onDelete: Cascade, onUpdate: Cascade)
+
+  userId String
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model PropertyMedia {
+  id String @id @default(uuid())
+
+  property   Properties @relation(references: [id], fields: [propertyId], onDelete: Cascade, onUpdate: Cascade)
+  propertyId String
+
+  contentType String
+  mediaUrl    String
+  thumbnail   String?
+  blurDataUrl String?
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
 }
 
 enum Roles {
